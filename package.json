@@ -13,7 +13,8 @@
   "dependencies": {
     "body-parser": "*",
     "ejs": "^2.6.1",
-    "express": "*"
+    "express": "*",
+    "express-validator": "^5.3.0"
   },
   "author": "João Relógio",
   "license": "ISC",
