@@ -8,11 +8,6 @@
   </ul>
 
   <h2>Add <%= title %></h2>
-  <% if(errors) { %>
-    <% errors.forEach(function(error){ %>
-      <%= error.msg %>
-    <% }) %>
-  <% } %>
   <form method="POST" action="/users/add">
     <label>First Name</label>
     <input type="text" name="first_name" />
@@ -26,6 +21,12 @@
     <input type="submit" value="Submit" />
   </form>
 
-
+  <% if(errors){ %>
+    <ul>
+    <% errors.forEach(function(error){ %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+  <% } %>
   
 <% include partials/bottom %>

@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Global Varibles
 app.use(function(req, res, next){
   res.locals.errors = null;
+  next();
 });
 
 // Express Validator Middleware
