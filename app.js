@@ -3,6 +3,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const expressValidator = require('express-validator');
 
+var mongojs = require('mongojs');
+var db = mongojs('test', ['users']);
+var MongoClient = require('mongodb').MongoClient;
+var url = `mongodb+srv://joaoprelogio@gmail.com:${encodeURIComponent('reeh7eeW@')}@customer-lpgp6.gcp.mongodb.net`;
+MongoClient.connect(url, function(err, db) {
+  console.log('MongoDB connect');
+});
+
+
 const app = express();
 
 // View Engine
@@ -41,32 +50,35 @@ app.use(expressValidator({
 }));
 
 
-const users = [
-  {
-    id: 1,
-    first_name: 'João',
-    last_name: 'Relógio',
-    email: 'joaorelogio@gmail.com'
-  },
-  {
-    id: 2,
-    first_name: 'Carla',
-    last_name: 'Relógio',
-    email: 'carlarelogio@gmail.com'
-  },
-  {
-    id: 3,
-    first_name: 'Sebastião',
-    last_name: 'Relógio',
-    email: 'sebastiaorelogio@gmail.com'
-  },
-]
+// const users = [
+//   {
+//     id: 1,
+//     first_name: 'João',
+//     last_name: 'Relógio',
+//     email: 'joaorelogio@gmail.com'
+//   },
+//   {
+//     id: 2,
+//     first_name: 'Carla',
+//     last_name: 'Relógio',
+//     email: 'carlarelogio@gmail.com'
+//   },
+//   {
+//     id: 3,
+//     first_name: 'Sebastião',
+//     last_name: 'Relógio',
+//     email: 'sebastiaorelogio@gmail.com'
+//   },
+// ]
 
 app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Customers',
-    users: users
-  });
+  db.users.find(function (err, docs) {
+    console.log(docs);
+    res.render('index', {
+      title: 'Customers',
+      users: docs
+    });
+  })
 });
 
 app.post('/users/add', (req, res) => {
