@@ -3,8 +3,10 @@
   <h1>Hello <%= title %> from EJS</h1>
   <ul>
   <% users.forEach(function(user){ %>
-    <li><%= user.first_name %> <%= user.last_name %></li>
-  <% }) %>
+    <li><%= user.first_name %> <%= user.last_name %> - <a href="#" class="deletebutton" data-id="
+      <%= user._id %>
+      ">Delete</a></li>
+  <% }) %> 
   </ul>
 
   <h2>Add <%= title %></h2>

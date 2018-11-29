@@ -4,12 +4,17 @@ const path = require('path');
 const expressValidator = require('express-validator');
 
 var mongojs = require('mongojs');
-var db = mongojs('test', ['users']);
-var MongoClient = require('mongodb').MongoClient;
-var url = `mongodb+srv://joaoprelogio@gmail.com:${encodeURIComponent('reeh7eeW@')}@customer-lpgp6.gcp.mongodb.net`;
-MongoClient.connect(url, function(err, db) {
-  console.log('MongoDB connect');
-});
+var db = mongojs('customerapp', ['users']);
+var ObjectID = mongojs.ObjectID;
+
+// MongoDB Server Connect
+// var mongojs = require('mongojs');
+// var db = mongojs('test', ['users']);
+// var MongoClient = require('mongodb').MongoClient;
+// var url = `mongodb+srv://joaoprelogio@gmail.com:${encodeURIComponent('reeh7eeW@')}@customer-lpgp6.gcp.mongodb.net`;
+// MongoClient.connect(url, function(err, db) {
+//   console.log('MongoDB connect');
+// });
 
 
 const app = express();
@@ -71,14 +76,23 @@ app.use(expressValidator({
 //   },
 // ]
 
+// Home route
 app.get('/', (req, res) => {
-  db.users.find(function (err, docs) {
-    console.log(docs);
+  db.users.find(function (err, docs){
     res.render('index', {
       title: 'Customers',
       users: docs
     });
   })
+
+  // MongoDB Server Connect
+  // db.users.find(function (err, docs) {
+  //   console.log(docs);
+  //   res.render('index', {
+  //     title: 'Customers',
+  //     users: docs
+  //   });
+  // })
 });
 
 app.post('/users/add', (req, res) => {
@@ -101,8 +115,22 @@ app.post('/users/add', (req, res) => {
       last_name: req.body.last_name,
       email: req.body.email,
     }
-    console.log('SUCCESS');
+    db.users.insert(newUser, function(err, result){
+      if(err){
+        console.log(err);
+      }
+      res.redirect('/');
+    });
   }
 });
+
+app.delete('/users/delete/:id', function(req, res){
+  db.users.remove({_id: db.ObjectId(req.params.id)}, function(err, result){
+    if(err) {
+      console.log(err);
+    }
+    res.redirect('/');
+  })
+})
 
 app.listen(3000, () => console.log(`listening on http://localhost:3000`));
